@@ -3,7 +3,12 @@
   "packageManager": "yarn@4.1.0",
   "scripts": {
     "build": "tsc",
-    "dev": "nodemon --watch src --exec 'ts-node' src/index.ts"
+    "dev": "nodemon --watch src --exec 'ts-node' src/index.ts",
+    "start": "node dist/index.js",
+    "typeorm": "typeorm-ts-node-commonjs -d src/database/data-source.ts",
+    "migration:show": "yarn typeorm migration:show",
+    "migration:create": "node scripts/migration-create.js",
+    "migration:revert": "yarn typeorm migration:revert"
   },
   "dependencies": {
     "@types/express": "^4.17.21",
