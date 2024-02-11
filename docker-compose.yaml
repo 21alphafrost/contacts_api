@@ -1,0 +1,43 @@
+version: '3'
+
+networks:
+  contacts:
+
+
+services:
+  mysql:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: contacts_db
+      MYSQL_USER: contacts_user
+      MYSQL_PASSWORD: contacts_pwd
+    volumes:
+      - ./docker/mysql:/var/lib/mysql
+    networks:
+      - contacts
+    ports:
+      - "3308:3306"
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/app
+    environment:
+      NODE_ENV: development
+      DB_HOST: mysql
+      DB_USERNAME: contacts_user
+      DB_PASSWORD: contacts_pwd
+      DB_DATABASE: contacts_db
+    depends_on:
+      - mysql
+    command: yarn dev
+    ports:
+      - "3000:3000"
+    networks:
+      - contacts
+
+volumes:
+  mysql:
